@@ -9,7 +9,7 @@ import tensorflow as tf
 def gesture_map_autoencoder(df_data, normal_label, win_size, in_dim, out_dim):
 
     #Data_feature = np.zeros([int(np.round(len(df_data)/win_size)), out_dim])
-    Data_feature = np.zeros([int(np.round(len(df_data)/win_size)), win_size, out_dim])
+    Data_feature = np.zeros([int(np.round(len(df_data)/win_size)), win_size, out_dim,1])
     print(Data_feature.shape)
     print(df_data.shape)
     for j in range(0, int(np.round(len(df_data)/win_size))):
@@ -18,6 +18,9 @@ def gesture_map_autoencoder(df_data, normal_label, win_size, in_dim, out_dim):
                 Data_feature[j,i,k] = df_data.iloc[i,k]
    
     Label = normal_label * np.ones([int(np.round(len(df_data)/win_size))])
+    tf.expand_dims(Data_feature,0)
+    print("expand dim 0")
+    print(Data_feature.shape)
     return Data_feature, Label
     
 ### Use window to sample the data, and decreasing the data size. ###
@@ -71,3 +74,5 @@ def normal_anomalous_distb(ts_data, labels):
     anomalous_data = ts_data[~labels]
     
     return normal_data, anomalous_data
+
+
